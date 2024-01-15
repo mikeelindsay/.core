@@ -13,7 +13,7 @@ return {
           { "<leader>fb", ":Telescope buffers<CR>", silent = true },
           { "<leader>fd", ":Telescope current_buffer_fuzzy_find<cr>", silent = true },
 	  { "<leader><leader>", "<Cmd>Telescope frecency workspace=CWD<CR>", silent = true},
-	  { "<localleader>F",function()
+	  { "<leader>Fg",function()
 	  vim.ui.input({ prompt = "Glob: ", completion = "file", default = "**/*." }, function(glob_pattern)
 		  require('telescope.builtin').live_grep({
 		    vimgrep_arguments = {

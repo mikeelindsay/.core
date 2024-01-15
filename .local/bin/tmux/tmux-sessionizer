@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 directories=(
-#    ~/.dotfiles/work/repos
-#    ~/.dotfiles/projects
-#    ~/.dotfiles/projects/repos
-#    ~/.dotfiles/work
-#    ~/.dotfiles/personal
-     ~/.dotfiles
+     ~/.core
 )
 excluded=(
     ~/.cargo
@@ -53,7 +48,7 @@ expand_symlink() {
         fi
     done
     find "$dir" -mindepth 1 -maxdepth 1 -type l -exec bash -c 'target="$(readlink -f "$0")"; [ -d "$target" ] && echo "$0"' {} \; | grep -v '.git'
-    find ~/.dotfiles -maxdepth 1 -type d
+    find ~/.core -maxdepth 1 -type d
 }
 
 existing_directories=()

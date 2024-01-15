@@ -87,7 +87,7 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-path="$HOME/.dotfiles/$1"
+path="$HOME/.core/$1"
 target="$HOME/$1"
 
 if [ -d "$path" ]; then
