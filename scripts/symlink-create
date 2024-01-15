@@ -1,0 +1,102 @@
+#!/bin/bash
+
+ensure_directory_exists() {
+    local dir_path=$1
+    if [ ! -d "$dir_path" ]; then
+        echo "Creating directory: $dir_path"
+        mkdir -p "$dir_path"
+    fi
+}
+
+create_symlink() {
+    local source=$1
+    local target=$2
+
+    ensure_directory_exists "$(dirname "$target")"
+
+    # Avoid creating a symlink if the target and source are the same
+    if [[ "$source" -ef "$target" ]]; then
+        echo "Skipping: Source and target are the same for $source"
+        return
+    fi
+
+    # Check if the target is a symlink
+    if [[ -L "$target" ]]; then
+        # Check if the symlink points to a different source
+        if [[ "$(readlink -f "$target")" != "$source" ]]; then
+            echo "Removing existing symbolic link: $target"
+            rm -f "$target"
+        else
+            echo "Skipping: $target is a symlink to $source"
+            return
+        fi
+    fi
+
+    # If a regular file exists with the same name, remove it
+    if [ -e "$target" ]; then
+        echo "Removing existing file: $target"
+        rm -f "$target"
+    fi
+
+    # Create a symbolic link
+    echo "Creating symbolic link for $source to $target"
+    ln -s "$source" "$target"
+}
+
+# Array of filenames to exclude
+exclude_files=(".git" ".gitignore" "." "..")
+
+# Function to check if a file is in the exclude list
+is_excluded() {
+    local file=$1
+    for excluded in "${exclude_files[@]}"; do
+        if [[ $file == $excluded ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Function to recursively create symbolic links for files in directories
+create_links_for_files() {
+    local source_dir=$1
+    local target_dir=$2
+
+    # Ensure the target directory exists
+    mkdir -p "$target_dir"
+
+    for file in "$source_dir"/*; do
+        local basename=$(basename "$file")
+        local target="$target_dir/$basename"
+
+        if ! is_excluded "$basename"; then
+            if [ -d "$file" ]; then
+                # If it's a directory, recurse into it
+                create_links_for_files "$file" "$target"
+            elif [ -f "$file" ]; then
+                # If it's a file, create a symlink
+                create_symlink "$file" "$target"
+            fi
+        fi
+    done
+}
+
+# Main execution
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <path>"
+    exit 1
+fi
+
+path="$HOME/.dotfiles/$1"
+target="$HOME/$1"
+
+if [ -d "$path" ]; then
+    # If path is a directory, process recursively
+    create_links_for_files "$path" "$target"
+elif [ -f "$path" ]; then
+    # If path is a file, create a symlink directly
+    create_symlink "$path" "$target"
+else
+    echo "Error: $path is not a valid file or directory"
+    exit 1
+fi

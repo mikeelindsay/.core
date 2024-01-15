@@ -1,0 +1,16 @@
+[submodule "ansible"]
+	path = ansible
+	url = git@github.com:MikeDotMpeg/ansible.git
+	branch = main
+[submodule "personal"]
+	path = personal
+	url = git@github.com:MikeDotMpeg/personal.git
+	branch = main
+[submodule "work"]
+	path = work
+	url = git@github.com:MikeDotMpeg/work.git
+	branch = main
+[submodule "shared"]
+	path = shared
+	url = git@github.com:MikeDotMpeg/shared.git
+	branch = main

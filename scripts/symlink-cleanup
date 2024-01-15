@@ -1,0 +1,24 @@
+# Function to check and remove broken symbolic links
+remove_broken_symlinks() {
+    local dir=$1
+
+    # Find all symbolic links in the directory
+    find "$dir" -type l | while read -r symlink; do
+        # Check if the symlink is broken
+        if [ ! -e "$symlink" ]; then
+            echo "Removing broken symlink: $symlink"
+            rm "$symlink"
+        fi
+    done
+}
+
+# Check if directory argument is provided
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <directory>"
+    exit 1
+fi
+
+directory=$1
+
+# Call the function with the provided directory
+remove_broken_symlinks "$directory"

@@ -1,0 +1,4 @@
+alias cls=clear
+alias dotfilespushpull='cd ~/.dotfiles/ansible && git switch main && git pull && cd ~/.dotfiles && git commit --all -m "." || git push && git push  && ansible-pull -U https://github.com/MikeDotMpeg/ansible.git -t "NORUN" && clear && ansible-playbook ~/.ansible/pull/*/local.yml --ask-become-pass'
+alias dotfilesrebase='ansible-pull -U https://github.com/MikeDotMpeg/ansible.git -t "NORUN" && clear && ansible-playbook ~/.ansible/pull/*/local.yml --ask-become-pass'
+alias dgcpp='git commit -m '.' --all || git push && git push'

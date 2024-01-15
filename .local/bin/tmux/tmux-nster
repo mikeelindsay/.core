@@ -1,0 +1,39 @@
+#!/bin/bash
+ACTION=$1
+KEY=$2
+BASH_COMMANDS=$3
+FILE="$HOME/.tmux-nster-sessions/$KEY"
+
+mkdir -p "$HOME/.tmux-nster-sessions"
+
+case "$ACTION" in
+    SET)
+        SESSION_NAME=$(tmux display-message -p '#S')
+        CURRENT_PATH=$(tmux display-message -p -F "#{pane_current_path}")
+        echo "$SESSION_NAME:$CURRENT_PATH:$BASH_COMMANDS" > "$FILE"
+        ;;
+    SWITCH)
+        if [ -f "$FILE" ]; then
+            IFS=':' read -r SAVED_SESSION SAVED_PATH SAVED_COMMANDS < "$FILE"
+            if tmux has-session -t "$SAVED_SESSION" 2>/dev/null; then
+                tmux switch-client -t "$SAVED_SESSION"
+        else
+                TMUX= tmux new-session -d -s "$SAVED_SESSION" -c "$SAVED_PATH"
+                tmux switch-client -t "$SAVED_SESSION"
+                tmux send-keys -t "$SAVED_SESSION" "$SAVED_COMMANDS" C-m
+            fi
+        else
+                exit 0
+        fi
+        ;;
+    *)
+        session_names=$(tmux list-sessions | sed -E 's/:.*$//')
+        active_session=$(tmux display-message -p '#S')
+        filtered_sessions=$(echo "$session_names" | grep -v "^$active_session$")
+        selected_session=$(echo "$filtered_sessions" | fzf --reverse)
+        if [ -n "$selected_session" ]; then
+             tmux switch-client -t "$selected_session"
+        fi
+        exit 0
+        ;;
+esac

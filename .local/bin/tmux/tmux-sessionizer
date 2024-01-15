@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+directories=(
+#    ~/.dotfiles/work/repos
+#    ~/.dotfiles/projects
+#    ~/.dotfiles/projects/repos
+#    ~/.dotfiles/work
+#    ~/.dotfiles/personal
+     ~/.dotfiles
+)
+excluded=(
+    ~/.cargo
+    ~/.cache
+    '.git/refs'
+    '.git/packed-refs'
+    '.git/objects'
+    '.git/info'
+    '.git/hooks'
+    '.git/config'
+    '.git/description'
+    '.git/branches'
+    '.git/HEAD'
+    '.git/worktrees'
+)
+ 
+exclusion_pattern=$(printf "|%s" "${excluded[@]}")
+exclusion_pattern=${exclusion_pattern:1} 
+
+expand_directory() {
+    local dir="$1"
+    if [[ "$dir" == *.git ]]; then
+        find "$dir" -mindepth 1 -maxdepth 3 -type d
+    else
+        find "$dir" -mindepth 1 -maxdepth 1 -type d
+    fi
+}
+
+resolve_symlink_target() {
+    local symlink="$1"
+    local target
+    target=$(readlink -f "$symlink")
+    if [ -d "$target" ]; then
+        echo "$target"
+    fi
+}
+
+expand_symlink() {
+    local dir="$1"
+    for symlink in $(find "$dir" -mindepth 1 -maxdepth 1 -type l); do
+        local target
+        target=$(resolve_symlink_target "$symlink")
+        if [ -n "$target" ]; then
+        	find "$target" -mindepth 1 -maxdepth 1 -type d
+        fi
+    done
+    find "$dir" -mindepth 1 -maxdepth 1 -type l -exec bash -c 'target="$(readlink -f "$0")"; [ -d "$target" ] && echo "$0"' {} \; | grep -v '.git'
+    find ~/.dotfiles -maxdepth 1 -type d
+}
+
+existing_directories=()
+for dir in "${directories[@]}"; do
+    if [ -d "$dir" ]; then
+        existing_directories+=("$dir")
+    elif [ -L "$dir" ]; then
+        link_target=$(readlink -f "$dir")
+        if [ -d "$link_target" ]; then
+            existing_directories+=("$dir")
+        fi
+    fi
+done
+
+find_command="for dir in \${existing_directories[*]}; do expand_directory \"\$dir\"; done"
+
+symlink_command="for dir in \${existing_directories[*]}; do expand_symlink \"\$dir\"; done"
+
+combined_results=$({ eval "$find_command"; eval "$symlink_command"; } | grep -Ev "$exclusion_pattern" | sort -u)
+
+if [[ $# -eq 1 ]]; then
+    selected=$1
+else
+    selected=$(echo "$combined_results" | fzf -s)
+fi
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+selected_name=$(basename "$selected" | tr . _)
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s $selected_name -c "$selected"
+    exit 0
+fi
+
+if ! tmux has-session -t=$selected_name 2> /dev/null; then
+    tmux new-session -ds $selected_name -c "$selected"
+fi
+ 
+tmux switch-client -t $selected_name
