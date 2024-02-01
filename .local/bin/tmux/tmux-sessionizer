@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 directories=(
      ~/.core
+     ~/repos
 )
 excluded=(
     ~/.cargo
