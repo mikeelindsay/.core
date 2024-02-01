@@ -6,6 +6,7 @@ vim.opt.list = true
 vim.opt.cursorline = true
 vim.api.nvim_command [[ set signcolumn=yes ]]
 vim.api.nvim_command [[ set nofixendofline ]]
+vim.opt.clipboard = "unnamedplus"
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
