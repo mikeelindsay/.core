@@ -1,5 +1,6 @@
 vim.opt.colorcolumn = {"80", "130"}
-vim.opt.scrolloff = 99999
+--vim.opt.scrolloff = 99999
+vim.opt.scrolloff = 5
 vim.api.nvim_command [[ set nu rnu ]]
 vim.api.nvim_command [[ set nowrap ]]
 vim.opt.list = true
@@ -7,6 +8,8 @@ vim.opt.cursorline = true
 vim.api.nvim_command [[ set signcolumn=yes ]]
 vim.api.nvim_command [[ set nofixendofline ]]
 vim.opt.clipboard = "unnamedplus"
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
