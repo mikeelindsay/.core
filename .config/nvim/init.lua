@@ -2,8 +2,8 @@
 local function highlightExtraSpaces()
   -- Define the highlight group
 
-  vim.cmd('highlight ExtraSpaces ctermbg=red guibg=red')
-  vim.cmd('highlight NoSpaceBeforeBrace ctermbg=yellow guibg=yellow')
+  vim.cmd('highlight ExtraSpaces ctermbg=darkred guibg=darkred')
+  vim.cmd('highlight NoSpaceBeforeBrace ctermbg=darkred guibg=darkred')
 
   local filetype = vim.bo.filetype
   if filetype ~= "lua" and filetype ~= "ps1" then
@@ -28,13 +28,11 @@ local function highlightExtraSpaces()
   -- The pattern now specifically looks for two or more spaces following a non-whitespace character but only if it is not at the start of the line
   vim.g.extra_spaces_match_id_indent = vim.fn.matchadd('ExtraSpaces', '\\S\\zs\\s\\{2,}\\ze\\S')
 
-  -- Add match for '{' without a space before it, not following '(', and not directly inside single or double quotes
-  vim.g.no_space_before_brace_id = vim.fn.matchadd('NoSpaceBeforeBrace', "[^ ('\"\\{]\\zs{")
+  -- Add match for '{' without a space, tab, '(', and not directly inside single or double quotes before it
+  vim.g.no_space_before_brace_id = vim.fn.matchadd('NoSpaceBeforeBrace', "[^ ('\"\t]\\zs{")
 end
 
-
 -- Set up an autocmd to highlight spaces when entering a buffer or text is changed
-
 vim.api.nvim_create_autocmd({'BufEnter', 'TextChanged', 'InsertLeave'}, {
   pattern = '*',
   callback = highlightExtraSpaces,
@@ -43,7 +41,6 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.colorcolumn = {"80", "130"}
---vim.opt.scrolloff = 99999
 vim.opt.scrolloff = 5
 vim.api.nvim_command [[ set nu rnu ]]
 vim.api.nvim_command [[ set nowrap ]]
