@@ -23,13 +23,15 @@ local function highlightExtraSpaces()
 
   -- Add match for trailing whitespaces
   vim.g.extra_spaces_match_id_trailing = vim.fn.matchadd('ExtraSpaces', '\\s\\+$')
+
   -- Add match for sequences of more than one space between words
   -- The pattern now specifically looks for two or more spaces following a non-whitespace character but only if it is not at the start of the line
   vim.g.extra_spaces_match_id_indent = vim.fn.matchadd('ExtraSpaces', '\\S\\zs\\s\\{2,}\\ze\\S')
 
- -- Add match for '{' without a space before it
-  vim.g.no_space_before_brace_id = vim.fn.matchadd('NoSpaceBeforeBrace', '\\S\\zs{')
+  -- Add match for '{' without a space before it, not following '(', and not directly inside single or double quotes
+  vim.g.no_space_before_brace_id = vim.fn.matchadd('NoSpaceBeforeBrace', "[^ ('\"\\{]\\zs{")
 end
+
 
 -- Set up an autocmd to highlight spaces when entering a buffer or text is changed
 
@@ -57,7 +59,7 @@ vim.opt.list = true
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
+	vim.fn.system( {
 		"git",
 		"clone",
 		"--filter=blob:none",
@@ -76,6 +78,4 @@ require("lazy").setup("plugins", {
     border = "single",
   }
 })
-vim.api.nvim_set_hl(0, "Comment", { fg = "#007f00"})
-vim.api.nvim_set_hl(0, "@comment", { link = "Comment"})
 
