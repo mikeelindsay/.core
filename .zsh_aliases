@@ -1,5 +1,5 @@
 alias cls=clear
-alias corepushpull='cd ~/.core/ansible && git switch main && git pull && cd ~/.core && git commit --all -m "." || git push && git push  && ansible-pull -U https://github.com/MikeDotMpeg/ansible.git -t "NORUN" && clear && ansible-playbook ~/.ansible/pull/*/local.yml --ask-become-pass'
-alias corerebase='ansible-pull -U https://github.com/MikeDotMpeg/ansible.git -t "NORUN" && clear && ansible-playbook ~/.ansible/pull/*/local.yml --ask-become-pass'
+alias corepushpull='cd ~/.core/ansible && git switch main && git pull && cd ~/.core && git commit --all -m "." || git push && git push  && ansible-pull -U https://github.com/mikeelindsay/ansible.git -t "NORUN" && clear && ansible-playbook ~/.ansible/pull/*/local.yml --ask-become-pass'
+alias corerebase='ansible-pull -U https://github.com/mikeelindsay/ansible.git -t "NORUN" && clear && ansible-playbook ~/.ansible/pull/*/local.yml --ask-become-pass'
 alias dgcpp='git commit -m '.' --all || git push && git push'
 alias uhub='GDK_SCALE=2 GDK_DPI_SCALE=0.5 /opt/unityhub/unityhub'
