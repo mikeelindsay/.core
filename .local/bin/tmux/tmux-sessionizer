@@ -75,6 +75,23 @@ new_results=$(find ~ -maxdepth 2 -type d -name .git | xargs -I {} dirname {} | s
 # Concatenate the results with a newline separator
 combined_results=$(echo -e "$combined_results\n$new_results" | sort -u)
 
+# If a directory in combined_results has a directory called repos, add it to a new list
+for dir in $combined_results; do
+	if [ -d "$dir/repos" ]; then
+		combined_results=$(echo -e "$combined_results\n$dir/repos")
+	fi
+done
+
+for dir in $combined_results; do
+	if [ -L "$dir/repos" ]; then
+		link_target=$(readlink -f "$dir/repos")
+		if [ -d "$link_target" ]; then
+			# follow the symlink and add all directories in it to the combined_results with the mount point replaced by the symlink
+			combined_results=$(echo -e "$combined_results\n$(find "$link_target" -mindepth 1 -maxdepth 1 -type d)")
+		fi
+	fi
+done
+
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
