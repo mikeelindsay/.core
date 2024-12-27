@@ -1,3 +1,4 @@
+
 return {
 	"williamboman/mason-lspconfig.nvim",
 	dependencies = {
@@ -12,6 +13,7 @@ return {
 		'zbirenbaum/copilot.lua',
 		'zbirenbaum/copilot-cmp',
 		'github/copilot.vim',
+		'Hoffs/omnisharp-extended-lsp.nvim',
 	},
 	config = function()
 		local mason = require("mason")
@@ -21,12 +23,20 @@ return {
 		 require("mason-lspconfig").setup {
 			ensure_installed = {
 				"lua_ls",
-				"powershell_es"
+				"powershell_es",
+				"omnisharp"
 			}
 		}
+local rounded_border_handlers = {
+	["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
+}
+	vim.keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
+	vim.keymap.set("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 
 		local lspconfig = require("lspconfig")
-		local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 		lspconfig.lua_ls.setup(
 		    {
@@ -46,6 +56,22 @@ return {
 				capabilities = lsp_capabilities
 			}
 		)
+lspconfig.omnisharp.setup({
+			on_attach = on_attach,
+			capabilities = capabilities,
+			root_dir = function(fname)
+				local primary = lspconfig.util.root_pattern("*.sln")(fname)
+				local fallback = lspconfig.util.root_pattern("*.csproj")(fname)
+				return primary or fallback
+			end,
+			-- enable_ms_build_load_projects_on_demand = true,
+			-- enable_roslyn_analyzers = true,
+			-- analyze_open_documents_only = true,
+			organize_imports_on_format = true,
+			handlers = vim.tbl_extend("force", rounded_border_handlers, {
+				["textDocument/definition"] = require("omnisharp_extended").handler,
+			}),
+		})
 		local cmp = require "cmp"
 		local has_words_before = function()
 			if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then

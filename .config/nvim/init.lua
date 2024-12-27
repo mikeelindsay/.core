@@ -59,7 +59,7 @@ end
 vim.opt.directory = SWAPDIR
 vim.opt.backupdir = BACKUPDIR
 vim.opt.undodir = UNDODIR
-vim.opt.swapfile = true
+vim.opt.swapfile = false
 vim.opt.backup = true
 vim.opt.undofile = true
 
