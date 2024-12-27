@@ -68,9 +68,12 @@ find_command="for dir in \${existing_directories[*]}; do expand_directory \"\$di
 
 symlink_command="for dir in \${existing_directories[*]}; do expand_symlink \"\$dir\"; done"
 
+# Combine the initial results
 combined_results=$({ eval "$find_command"; eval "$symlink_command"; } | grep -Ev "$exclusion_pattern" | sort -u)
-combined_results+=$(dirname $(find ~ -maxdepth 2 -type d -name .git))
-combined_results=$(echo "$combined_results" | sort -u)
+# Temporary variable to store new results
+new_results=$(find ~ -maxdepth 2 -type d -name .git | xargs -I {} dirname {} | sort -u)
+# Concatenate the results with a newline separator
+combined_results=$(echo -e "$combined_results\n$new_results" | sort -u)
 
 if [[ $# -eq 1 ]]; then
     selected=$1
