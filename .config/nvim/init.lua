@@ -31,7 +31,7 @@ local function highlightExtraSpaces()
   -- Add match for '{' without a space, tab, '(', and not directly inside single or double quotes before it
   vim.g.no_space_before_brace_id = vim.fn.matchadd('NoSpaceBeforeBrace', "[^ ('\"\t]\\zs{")
 end
-
+vim.opt.shortmess:append("I")
 -- Set up an autocmd to highlight spaces when entering a buffer or text is changed
 vim.api.nvim_create_autocmd({'BufEnter', 'TextChanged', 'InsertLeave'}, {
   pattern = '*',
@@ -219,3 +219,10 @@ require("lazy").setup("plugins", {
 vim.api.nvim_create_autocmd("LspAttach", { callback = function(args) local client = vim.lsp.get_client_by_id(args.data.client_id) client.server_capabilities.semanticTokensProvider = nil end, });
 
 vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#dcdcaa" })
+
+
+-- set the column line color
+vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#111111" })
+
+-- set the cursor line 
+--vim.api.nvim_set_hl(0, "CursorLine", { bg = "#111111" })
