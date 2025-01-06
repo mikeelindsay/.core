@@ -216,7 +216,8 @@ require("lazy").setup("plugins", {
 -- end
 -- -- Call the function to set custom diagnostic highlights
 -- set_custom_diagnostics_highlight()
-vim.api.nvim_create_autocmd("LspAttach", { callback = function(args) local client = vim.lsp.get_client_by_id(args.data.client_id) client.server_capabilities.semanticTokensProvider = nil end, });
+vim.highlight.priorities.semantic_tokens = 95
+--vim.api.nvim_create_autocmd("LspAttach", { callback = function(args) local client = vim.lsp.get_client_by_id(args.data.client_id) client.server_capabilities.semanticTokensProvider = nil end, });
 
 vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#dcdcaa" })
 
@@ -226,3 +227,12 @@ vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#111111" })
 
 -- set the cursor line 
 --vim.api.nvim_set_hl(0, "CursorLine", { bg = "#111111" })
+--
+--
+--
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- delay update diagnostics
+    update_in_insert = true,
+  }
+)

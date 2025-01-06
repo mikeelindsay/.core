@@ -18,9 +18,9 @@ return {
 				Type = { fg = '#4ec9b0' },
 				["@type"] = { fg = '#4ec9b0' },
 				["@lsp.type.type"] = { fg = "#4ec9b0"},
-				String = { fg = "#bd7158" },
-				["@string"] = { fg = "#bd7158" },
-				["@lsp.string"] = { fg = "#bd7158" },
+				String = { fg = "#ce9178" },
+				["@string"] = { fg = "#ce9178" },
+				["@lsp.string"] = { fg = "#ce9178" },
 				["Function"] = { fg = "#dcdcaa" },
 				["@function"] = { fg = "#dcdcaa" },
 				["@lsp.function"] = { fg = "#dcdcaa" },
@@ -37,12 +37,15 @@ return {
 				["@variable.member"] = {fg = "#9cdcfe" },
 				 ["@constant"] = { fg = "#569cd6" },
 				 ["@type.builtin"] = { fg = "#569cd6" },
+				["@keyword.conditional"] = {fg = "#c586c0" },
+				["@keyword.operator"] = {fg = "#d4d4d4"},
+
 			},
     code_style = {
         comments = 'italic',
         keywords = 'none',
         functions = 'none',
-        strings = 'bold',
+        strings = 'none',
         variables = 'none'
     },
 		})
