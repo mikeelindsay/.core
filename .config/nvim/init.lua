@@ -100,7 +100,6 @@ if not vim.loop.fs_stat(lazypath) then
 	})
 end
 vim.opt.rtp:prepend(lazypath)
-
 require("lazy").setup("plugins", {
   defaults = {
     lazy = false,
@@ -109,58 +108,58 @@ require("lazy").setup("plugins", {
     border = "single",
   }
 })
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-    pattern = {"*"},
-    callback = function()
-      local save_cursor = vim.fn.getpos(".")
-      pcall(function() vim.cmd [[%s/\s\+$//e]] end)
-      vim.fn.setpos(".", save_cursor)
-    end,
-	})
--- Define the highlight groups with faded colors and a light gray tint
-vim.cmd [[
-  highlight DiagnosticError guifg=#8B8000 gui=bold
-  highlight DiagnosticWarn guifg=#FFD9B3 gui=bold
-  highlight DiagnosticInfo guifg=#CCE5FF gui=bold
-  highlight DiagnosticHint guifg=#CCFFCC gui=bold
-
-  highlight DiagnosticErrorLn guibg=#441111 guifg=#FFFFFF
-  highlight DiagnosticWarnLn guibg=none guifg=none
-  highlight DiagnosticInfoLn guibg=none guifg=none
-  highlight DiagnosticHintLn guibg=none guifg=none
-
-]]
-vim.cmd([[highlight DiagnosticVirtualTextError guibg=none guifg=#8B8000]]) vim.cmd([[highlight DiagnosticVirtualTextWarn guibg=#none]]) vim.cmd([[highlight DiagnosticVirtualTextInfo guibg=#1a212e]]) vim.cmd([[highlight DiagnosticVirtualTextHint guibg=#1a212e]])
--- Configure diagnostics
-vim.diagnostic.config {
-  signs = {
-    -- Define the text to be displayed for each diagnostic severity level
-    text = {
-      [vim.diagnostic.severity.ERROR] = "E",  -- Display "E" for errors
-      [vim.diagnostic.severity.WARN]  = "W",  -- Display "W" for warnings
-      [vim.diagnostic.severity.INFO]  = "I",  -- Display "I" for informational messages
-      [vim.diagnostic.severity.HINT]  = "H",  -- Display "H" for hints
-    },
-
-    -- Define the highlight groups for the line numbers for each severity level
-    numhl = {
-      [vim.diagnostic.severity.ERROR] = "DiagnosticErrorNr",  -- Highlight group for errors
-      [vim.diagnostic.severity.WARN]  = "DiagnosticWarnNr",   -- Highlight group for warnings
-      [vim.diagnostic.severity.INFO]  = "DiagnosticInfoNr",   -- Highlight group for informational messages
-      [vim.diagnostic.severity.HINT]  = "DiagnosticHintNr",   -- Highlight group for hints
-    },
-
-    -- Define the highlight groups for the entire line for each severity level
-    linehl = {
-      [vim.diagnostic.severity.ERROR] = "DiagnosticErrorLn",
-      [vim.diagnostic.severity.WARN]  = "DiagnosticWarnLn",
-      [vim.diagnostic.severity.INFO]  = "DiagnosticInfoLn",
-      [vim.diagnostic.severity.HINT]  = "DiagnosticHintLn",
-    },
-  },
-	update_in_insert = true,
-	severity_sort = true,
-}
+-- vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+--     pattern = {"*"},
+--     callback = function()
+--       local save_cursor = vim.fn.getpos(".")
+--       pcall(function() vim.cmd [[%s/\s\+$//e]] end)
+--       vim.fn.setpos(".", save_cursor)
+--     end,
+-- 	})
+-- -- Define the highlight groups with faded colors and a light gray tint
+-- vim.cmd [[
+--   highlight DiagnosticError guifg=#8B8000 gui=bold
+--   highlight DiagnosticWarn guifg=#FFD9B3 gui=bold
+--   highlight DiagnosticInfo guifg=#CCE5FF gui=bold
+--   highlight DiagnosticHint guifg=#CCFFCC gui=bold
+--
+--   highlight DiagnosticErrorLn guibg=#441111 guifg=#FFFFFF
+--   highlight DiagnosticWarnLn guibg=none guifg=none
+--   highlight DiagnosticInfoLn guibg=none guifg=none
+--   highlight DiagnosticHintLn guibg=none guifg=none
+--
+-- ]]
+-- vim.cmd([[highlight DiagnosticVirtualTextError guibg=none guifg=#8B8000]]) vim.cmd([[highlight DiagnosticVirtualTextWarn guibg=#none]]) vim.cmd([[highlight DiagnosticVirtualTextInfo guibg=#1a212e]]) vim.cmd([[highlight DiagnosticVirtualTextHint guibg=#1a212e]])
+-- -- Configure diagnostics
+-- vim.diagnostic.config {
+--   signs = {
+--     -- Define the text to be displayed for each diagnostic severity level
+--     text = {
+--       [vim.diagnostic.severity.ERROR] = "E",  -- Display "E" for errors
+--       [vim.diagnostic.severity.WARN]  = "W",  -- Display "W" for warnings
+--       [vim.diagnostic.severity.INFO]  = "I",  -- Display "I" for informational messages
+--       [vim.diagnostic.severity.HINT]  = "H",  -- Display "H" for hints
+--     },
+--
+--     -- Define the highlight groups for the line numbers for each severity level
+--     numhl = {
+--       [vim.diagnostic.severity.ERROR] = "DiagnosticErrorNr",  -- Highlight group for errors
+--       [vim.diagnostic.severity.WARN]  = "DiagnosticWarnNr",   -- Highlight group for warnings
+--       [vim.diagnostic.severity.INFO]  = "DiagnosticInfoNr",   -- Highlight group for informational messages
+--       [vim.diagnostic.severity.HINT]  = "DiagnosticHintNr",   -- Highlight group for hints
+--     },
+--
+--     -- Define the highlight groups for the entire line for each severity level
+--     linehl = {
+--       [vim.diagnostic.severity.ERROR] = "DiagnosticErrorLn",
+--       [vim.diagnostic.severity.WARN]  = "DiagnosticWarnLn",
+--       [vim.diagnostic.severity.INFO]  = "DiagnosticInfoLn",
+--       [vim.diagnostic.severity.HINT]  = "DiagnosticHintLn",
+--     },
+--   },
+-- 	update_in_insert = true,
+-- 	severity_sort = true,
+-- }
 -- -- Define highlight groups for specific areas
 -- vim.api.nvim_set_hl(0, 'DiagnosticsArea', { bg = '#D32F2F' }) -- Dark red for the specific area
 --
@@ -189,32 +188,34 @@ vim.diagnostic.config {
 -- highlight_diagnostics()
 --
 --
--- Set the highlight color for unreachable and unused code to light gray
-vim.api.nvim_set_hl(0, 'UnreachableCode', { fg = '#d3d3d3' })
-vim.api.nvim_set_hl(0, 'UnusedCode', { fg = '#d3d3d3' })
+-- -- Set the highlight color for unreachable and unused code to light gray
+-- vim.api.nvim_set_hl(0, 'UnreachableCode', { fg = '#d3d3d3' })
+-- vim.api.nvim_set_hl(0, 'UnusedCode', { fg = '#d3d3d3' })
+--
+-- -- Link the custom highlight groups to the corresponding diagnostics
+-- vim.cmd [[
+--   autocmd ColorScheme * highlight link DiagnosticUnreachableCode UnreachableCode
+--   autocmd ColorScheme * highlight link DiagnosticUnusedCode UnusedCode
+-- ]]
+--
+-- -- Assuming you are using the built-in LSP, configure the diagnostics
+-- local function set_custom_diagnostics_highlight()
+--   local ns = vim.api.nvim_create_namespace("my_custom_highlights")
+--   vim.diagnostic.handlers.signs = {
+--     show = function(_, bufnr, _, opts)
+--       local diagnostics = vim.diagnostic.get(bufnr, opts)
+--       for _, d in ipairs(diagnostics) do
+--         if d.message:match("unreachable code") then
+--           vim.api.nvim_buf_add_highlight(bufnr, ns, 'UnreachableCode', d.lnum, d.col, d.end_col)
+--         elseif d.message:match("unused") then
+--           vim.api.nvim_buf_add_highlight(bufnr, ns, 'UnusedCode', d.lnum, d.col, d.end_col)
+--         end
+--       end
+--     end,
+--   }
+-- end
+-- -- Call the function to set custom diagnostic highlights
+-- set_custom_diagnostics_highlight()
+vim.api.nvim_create_autocmd("LspAttach", { callback = function(args) local client = vim.lsp.get_client_by_id(args.data.client_id) client.server_capabilities.semanticTokensProvider = nil end, });
 
--- Link the custom highlight groups to the corresponding diagnostics
-vim.cmd [[
-  autocmd ColorScheme * highlight link DiagnosticUnreachableCode UnreachableCode
-  autocmd ColorScheme * highlight link DiagnosticUnusedCode UnusedCode
-]]
-
--- Assuming you are using the built-in LSP, configure the diagnostics
-local function set_custom_diagnostics_highlight()
-  local ns = vim.api.nvim_create_namespace("my_custom_highlights")
-  vim.diagnostic.handlers.signs = {
-    show = function(_, bufnr, _, opts)
-      local diagnostics = vim.diagnostic.get(bufnr, opts)
-      for _, d in ipairs(diagnostics) do
-        if d.message:match("unreachable code") then
-          vim.api.nvim_buf_add_highlight(bufnr, ns, 'UnreachableCode', d.lnum, d.col, d.end_col)
-        elseif d.message:match("unused") then
-          vim.api.nvim_buf_add_highlight(bufnr, ns, 'UnusedCode', d.lnum, d.col, d.end_col)
-        end
-      end
-    end,
-  }
-end
-
--- Call the function to set custom diagnostic highlights
-set_custom_diagnostics_highlight()
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#dcdcaa" })

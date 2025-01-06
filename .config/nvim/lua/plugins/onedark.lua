@@ -1,4 +1,5 @@
 return {
+ -- "EdenEast/nightfox.nvim",
 	'navarasu/onedark.nvim',
 	config = function()
 		local onedark = require('onedark')
@@ -7,7 +8,43 @@ return {
 				["Comment"] = { fg = "#007f00" },
 				["@comment"] = { fg = "#007f00" },
 				["@lsp.type.comment"] = { fg = "#007f00" },
-			}
+				Normal = { bg = "#000000", fg = "#000000" },
+				EndOfBuffer = { bg = "#000000" },
+				 ["@keyword"] = { fg = "#569cd6" },
+
+				 ["@keyword.function"] = { fg = "#569cd6" },
+				["@lsp.keyword"] = { fg = "#569cd6"},
+				Keyword = { fg = "#569cd6" },
+				Type = { fg = '#4ec9b0' },
+				["@type"] = { fg = '#4ec9b0' },
+				["@lsp.type.type"] = { fg = "#4ec9b0"},
+				String = { fg = "#bd7158" },
+				["@string"] = { fg = "#bd7158" },
+				["@lsp.string"] = { fg = "#bd7158" },
+				["Function"] = { fg = "#dcdcaa" },
+				["@function"] = { fg = "#dcdcaa" },
+				["@lsp.function"] = { fg = "#dcdcaa" },
+				["@function.method"] = { fg = "#dcdcaa" },
+				["@function.call"] = { fg = "#dcdcaa" },
+				["@function.builtin"] = { fg = "#dcdcaa" },
+				["@lsp.type.function"] = { fg = "#dcdcaa"},
+				["@lsp.type.functions"] = {fg = "#dcdcaa"},
+				["@variable.parameter"] = {fg = "#9cdcfe"},
+				["@variable"] = { fg = "#9cdcfe" },
+				["@lsp.variable"] = { fg = "#9cdcfe" },
+				["Identifier"] = { fg = "#9cdcfe" },
+				["@variable.builtin"] = {fg = "#6b98b3" },
+				["@variable.member"] = {fg = "#9cdcfe" },
+				 ["@constant"] = { fg = "#569cd6" },
+				 ["@type.builtin"] = { fg = "#569cd6" },
+			},
+    code_style = {
+        comments = 'italic',
+        keywords = 'none',
+        functions = 'none',
+        strings = 'bold',
+        variables = 'none'
+    },
 		})
 		onedark.load()
 	end,
