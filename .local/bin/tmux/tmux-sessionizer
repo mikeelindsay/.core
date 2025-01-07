@@ -82,12 +82,26 @@ for dir in $combined_results; do
 	fi
 done
 
+# Add worktrees to the combined_results
 for dir in $combined_results; do
 	if [ -L "$dir/repos" ]; then
 		link_target=$(readlink -f "$dir/repos")
 		if [ -d "$link_target" ]; then
 			# follow the symlink and add all directories in it to the combined_results with the mount point replaced by the symlink
 			combined_results=$(echo -e "$combined_results\n$(find "$link_target" -mindepth 1 -maxdepth 1 -type d)")
+
+			updated_results=$(echo -e "$(find "$link_target" -mindepth 1 -maxdepth 1 -type d)")
+			for result in $updated_results; do
+				if [ -d "$result/.git/worktrees" ]; then
+					for worktreedir in $(find "$result/.git/worktrees" -mindepth 1 -maxdepth 1 -type d); do
+						if [ -f "$worktreedir/gitdir" ]; then
+							gitdir=$(cat "$worktreedir/gitdir") 
+							gitdir_trimmed="${gitdir::-5}"
+							combined_results=$(echo -e "$combined_results\n$gitdir_trimmed")
+						fi
+					done
+				fi
+			done
 		fi
 	fi
 done
