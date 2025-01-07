@@ -9,10 +9,11 @@ return {
 		keys = {
 			{ "<leader>u", "<cmd>Telescope undo<cr>", silent = true },
 			{ "<leader>ff", ":Telescope git_files<CR>", silent = true },
-			{ "<leader>fr", ":Telescope find_files<CR>", silent = true },
+			{ "<leader>fr", ":lua require'telescope.builtin'.find_files(require('telescope.themes').get_ivy({ bufnr = 0, layout_config = { height = 0.8 } }))<cr>", silent = true },
 			{ "<leader>fh", ":Telescope help_tags<CR>", silent = true },
 			{ "<leader>fg", ":Telescope live_grep<CR>", silent = true },
 			{ "<leader>fb", ":Telescope buffers<CR>", silent = true },
+
 			{ "<leader>fd", ":Telescope current_buffer_fuzzy_find<cr>", silent = true },
 			{ "<leader><leader>", "<Cmd>Telescope frecency workspace=CWD<CR>", silent = true},
 			{ "<leader>Fg",function()
