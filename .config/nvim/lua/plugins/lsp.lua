@@ -11,16 +11,12 @@ return {
 		'hrsh7th/nvim-cmp',
 		'L3MON4D3/LuaSnip',
 		'petertriho/cmp-git',
-		'zbirenbaum/copilot.lua',
-		'zbirenbaum/copilot-cmp',
 		'github/copilot.vim',
-		-- Do i need fidget?
-		"j-hui/fidget.nvim",
 		'Hoffs/omnisharp-extended-lsp.nvim',
 	},
+
 	config = function()
 		local mason = require("mason")
-		require('fidget').setup({})
 		mason.setup()
 		require("conform").setup({
 			formatters_by_ft = {
@@ -82,17 +78,12 @@ return {
 				["textDocument/definition"] = require("omnisharp_extended").handler,
 			}),
 		})
-	
+
 		local cmp = require "cmp"
 		local luasnip = require "luasnip"
 		cmp.setup(
 			{
 				experimental = {ghost_text = false},
-				-- snippet = {
-				-- 	expand = function(args)
-				-- 		vim.fn["vsnip#anonymous"](args.body)
-				-- 	end
-				-- },
 				mapping = {
 
 					['<CR>'] = cmp.mapping(function(fallback)
@@ -149,27 +140,27 @@ return {
 					end, { "i", "s" }),
 
 				},
-					-- mapping = cmp.mapping.preset.insert(
-					-- 	{
-					-- 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
-					-- 		["<C-f>"] = cmp.mapping.scroll_docs(4),
-					-- 		["<C-Space>"] = cmp.mapping.complete(),
-					-- 		["<C-e>"] = cmp.mapping.abort(),
-					-- 		["<CR>"] = cmp.mapping.confirm({select = true})
-					-- 	}
-					-- ),
-					sources = cmp.config.sources(
-						{
-							{name = "nvim_lsp"},
-							{name = "vsnip"}
-						},
-						{
-							{name = "buffer"}
-						}
-					)
-				}
-		)
+				-- mapping = cmp.mapping.preset.insert(
+				-- 	{
+				-- 		["<C-b>"] = cmp.mapping.scroll_docs(-4),
+				-- 		["<C-f>"] = cmp.mapping.scroll_docs(4),
+				-- 		["<C-Space>"] = cmp.mapping.complete(),
+				-- 		["<C-e>"] = cmp.mapping.abort(),
+				-- 		["<CR>"] = cmp.mapping.confirm({select = true})
+				-- 	}
+				-- ),
 
+				sources = cmp.config.sources(
+					{
+						{name = "nvim_lsp"},
+						{name = "vsnip"}
+					},
+					{
+						{name = "buffer"}
+					}
+				),
+			}
+		)
 		cmp.setup.cmdline(
 			{
 				"/",

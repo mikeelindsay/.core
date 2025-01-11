@@ -68,3 +68,6 @@ function SearchByFileName()
 		require("telescope.builtin").find_files(opts)
 	end
 end
+
+-- Copilot
+vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)')
