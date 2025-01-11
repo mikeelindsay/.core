@@ -58,8 +58,7 @@ return {
 					}
 				}
 			}
-		}
-		)
+		})
 
 		lspconfig.powershell_es.setup(
 			{
@@ -82,6 +81,7 @@ return {
 				["textDocument/definition"] = require("omnisharp_extended").handler,
 			}),
 		})
+
 		local cmp = require "cmp"
 
 		cmp.setup(
@@ -91,10 +91,6 @@ return {
 					expand = function(args)
 						vim.fn["vsnip#anonymous"](args.body)
 					end
-				},
-				window = {
-					completion = cmp.config.window.bordered(),
-					documentation = cmp.config.window.bordered()
 				},
 				mapping = cmp.mapping.preset.insert(
 					{

@@ -1,3 +1,4 @@
+
 -- Temporary work around due to issue with 10.3 to allow :Inspect to work on highlight groups
 vim.hl = vim.highlight
 
@@ -72,5 +73,32 @@ set_highlight('@punctuation.special.c_sharp', {fg = "#569cd6"})
 set_highlight("TelescopeMatching", { fg = "#d7ba7d", bold=true})
 set_highlight("TelescopeResultsNormal", { fg = "#242524" })
 set_highlight("TelescopeBorder", { fg = "#242524" })
+
+set_highlight("CmpNormal", {background = "#242524", foreground = "#D4D4D4"})
+set_highlight("CmpItemAbbrMatch", {fg="#569CD6"})
+set_highlight("CmpItemAbbrMatchFuzzy", {fg="#569CD6"})
+set_highlight("CmpItemKindFunction", {fg="#C586C0"})
+set_highlight("CmpItemKindMethod", {fg="#C586C0"})
+set_highlight("CmpItemKindVariable", {fg="#9CDCFE"})
+set_highlight("CmpItemKindKeyword", {fg="#D4D4D4"})
+
+
+-- gray
+vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg='NONE', strikethrough=true, fg='#808080' })
+-- blue
+vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg='NONE', fg='#569CD6' })
+vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { link='CmpIntemAbbrMatch' })
+-- light blue
+vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { bg='NONE', fg='#9CDCFE' })
+vim.api.nvim_set_hl(0, 'CmpItemKindInterface', { link='CmpItemKindVariable' })
+vim.api.nvim_set_hl(0, 'CmpItemKindText', { link='CmpItemKindVariable' })
+-- pink
+vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { bg='NONE', fg='#C586C0' })
+vim.api.nvim_set_hl(0, 'CmpItemKindMethod', { link='CmpItemKindFunction' })
+-- front
+vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg='NONE', fg='#D4D4D4' })
+vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link='CmpItemKindKeyword' })
+vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link='CmpItemKindKeyword' })
+
 
 set_highlight("DiagnosticUnnecessary", { fg = "#242524" })
