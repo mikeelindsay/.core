@@ -37,7 +37,7 @@ local function set_highlight(group, properties)
 end
 
 -- Set custom highlights - From theme https://github.com/MohammedAldosari/simple-black-theme/blob/master/themes/dark_plus.json
-set_highlight("Normal", { fg = "#f8f8ff", bg = "#000000" })
+set_highlight("Normal", { fg = "#d4d4d4", bg = "#000000" })
 set_highlight("Comment", { fg = "#6A9955", bold=false, italic = true, force = true, blend=100 })
 set_highlight("Whitespace", {fg = "#242524"})
 set_highlight("String", { fg = "#ce9178"})
@@ -51,6 +51,9 @@ set_highlight("Visual", { bg = "#242524", fg="#b0bb00", blend=50, bold=true })
 set_highlight("@variable", {fg = "#9cdcfe"})
 set_highlight("CursorLine", { bg = "#2c323c" })
 set_highlight("CursorLineNr", { fg = "#dcdcaa" })
+
+set_highlight("xmlTag", { fg = "Gray" })
+set_highlight("xmlTagName", { fg = "#569cd6" })
 
 set_highlight('RainbowDelimiterBlue', {fg = "#569cd6"})
 set_highlight('RainbowDelimiterYellow', {fg = "#dddd55"})
@@ -71,7 +74,7 @@ set_highlight("@keyword.conditional.c_sharp", {fg = "#C586C0"})
 set_highlight('@punctuation.special.c_sharp', {fg = "#569cd6"})
 
 set_highlight("TelescopeMatching", { fg = "#d7ba7d", bold=true})
-set_highlight("TelescopeResultsNormal", { fg = "#242524" })
+set_highlight("TelescopeResultsNormal", { fg = "DarkGray" })
 set_highlight("TelescopeBorder", { fg = "#242524" })
 
 set_highlight("CmpNormal", {background = "#242524", foreground = "#D4D4D4"})
