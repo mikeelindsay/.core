@@ -1,74 +1,65 @@
 return {
 	'nvim-telescope/telescope.nvim',
-	tag = '0.1.5',
 	dependencies = {
-		"nvim-telescope/telescope-frecency.nvim",
 		'nvim-lua/plenary.nvim',
-		{ "debugloop/telescope-undo.nvim", lazy = false},
+		"nvim-telescope/telescope-frecency.nvim",
+		{ 'nvim-telescope/telescope-fzf-native.nvim', build='make' },
 	},
-		keys = {
-			{ "<leader>u", "<cmd>Telescope undo<cr>", silent = true },
-			{ "<leader>ff", ":Telescope git_files<CR>", silent = true },
-			{ "<leader>fr", ":lua require'telescope.builtin'.find_files(require('telescope.themes').get_ivy({ bufnr = 0, layout_config = { height = 0.8 } }))<cr>", silent = true },
-			{ "<leader>fh", ":Telescope help_tags<CR>", silent = true },
-			{ "<leader>fg", ":Telescope live_grep<CR>", silent = true },
-			{ "<leader>fb", ":Telescope buffers<CR>", silent = true },
 
-			{ "<leader>fd", ":Telescope current_buffer_fuzzy_find<cr>", silent = true },
-			{ "<leader><leader>", "<Cmd>Telescope frecency workspace=CWD<CR>", silent = true},
-			{ "<leader>Fg",function()
-				vim.ui.input({ prompt = "Glob: ", completion = "file", default = "**/*." }, function(glob_pattern)
-					require('telescope.builtin').live_grep({
-						vimgrep_arguments = {
-							"rg",
-							"--color=never",
-							"--no-heading",
-							"--with-filename",
-							"--line-number",
-							"--column",
-							"--smart-case",
-							"--glob=" .. (glob_pattern or ""),
-						}
-				 })
-			end)
-		end , {}}
-		},
-	opts = {
-		extensions = {
-			undo = {
-			use_delta = true,
-			use_custom_command = nil, -- setting this implies `use_delta = false`. Accepted format is: { "bash", "-c", "echo '$DIFF' | delta" }
-			side_by_side = false,
-			diff_context_lines = vim.o.scrolloff,
-			entry_format = "state #$ID, $STAT, $TIME",
-			time_format = "",
-			saved_only = false,
-			},
-		},
-		pickers = {
-			defaults = {
-				vimgrep_arguments = {
-				   'rg',
-				   '--color=never',
-				   '--no-heading',
-				   '--with-filename',
-				   '--line-number',
-				   '--column',
-				   '--smart-case',
-				   '--ignore-file',
-				   '.gitignore'
+	lazy = false,
+	config = function()
+		local ts = require('telescope')
+		local h_pct = 1
+		local w_pct = 1
+		local w_limit = 75
+		local fullscreen_setup = {
+			borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+			preview = { hide_on_startup = false },
+			layout_strategy = 'flex',
+			layout_config = {
+				flex = { flip_columns = 100 },
+				horizontal = {
+					mirror = false,
+					prompt_position = 'top',
+					width = function(_, cols, _)
+						return math.floor(cols * w_pct)
+					end,
+					height = function(_, _, rows)
+						return math.floor(rows * h_pct)
+					end,
+					preview_cutoff = 10,
+					preview_width = 0.5,
+				},
+				vertical = {
+					mirror = true,
+					prompt_position = 'top',
+					width = function(_, cols, _)
+						return math.floor(cols * w_pct)
+					end,
+					height = function(_, _, rows)
+						return math.floor(rows * h_pct)
+					end,
+					preview_cutoff = 10,
+					preview_height = 0.5,
 				},
 			},
-			find_files = {
-				hidden = true
-			},
-			git_files = {
-				show_untracked = true
-			}
-		},
-		function()
-				require("telescope").load_extension("frecency")
-				require("telescope").load_extension("undo")
-		end
-	}
+		}
+		ts.setup {
+			defaults = vim.tbl_extend('error', fullscreen_setup, {
+				sorting_strategy = 'ascending',
+--				path_display = { "smart" },
+				mappings = {
+					n = {
+						['o'] = require('telescope.actions.layout').toggle_preview,
+						['<Esc>'] = require('telescope.actions').close,
+					},
+					i = {
+						['<C-o>'] = require('telescope.actions.layout').toggle_preview,
+						['<Esc>'] = require('telescope.actions').close,
+					},
+				},
+			}),
+			ts.load_extension('fzf')
+		}
+	end,
 }
