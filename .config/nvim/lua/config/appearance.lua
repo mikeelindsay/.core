@@ -1,9 +1,17 @@
 
+
+
+vim.api.nvim_create_augroup("AutoEditCS", { clear = true })
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*.cs",
+  command = "edit",
+  group = "AutoEditCS"
+})
+
+
+
 -- Temporary work around due to issue with 10.3 to allow :Inspect to work on highlight groups
 vim.hl = vim.highlight
-
--- Prevent cursor from disappearing in insert mode
-vim.opt.guicursor = ""
 
 -- Line numbers
 vim.opt.nu = true
@@ -72,6 +80,11 @@ set_highlight("@variable.builtin.c_sharp", {fg = "#569cd6"})
 set_highlight("@constructor.c_sharp", {fg = "#dcdcaa"})
 set_highlight("@keyword.conditional.c_sharp", {fg = "#C586C0"})
 set_highlight('@punctuation.special.c_sharp', {fg = "#569cd6"})
+set_highlight("@keyword.return.c_sharp", {fg = "#C586C0"})
+set_highlight("@keyword.repeat.c_sharp", {fg = "#C586C0"})
+set_highlight("@keyword.exception.c_sharp", {fg = "#C586C0"})
+set_highlight("@keyword.operator.c_sharp", {fg = "#C586C0"})
+
 
 set_highlight("TelescopeMatching", { fg = "#d7ba7d", bold=true})
 set_highlight("TelescopeResultsNormal", { fg = "DarkGray" })

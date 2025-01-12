@@ -44,18 +44,22 @@ return {
 				},
 			},
 		}
+
 		ts.setup {
 			defaults = vim.tbl_extend('error', fullscreen_setup, {
 				sorting_strategy = 'ascending',
---				path_display = { "smart" },
 				mappings = {
 					n = {
 						['o'] = require('telescope.actions.layout').toggle_preview,
 						['<Esc>'] = require('telescope.actions').close,
+				        ["<C-a>"] = require('telescope.actions').results_scrolling_left,
+						["<C-e>"] = require('telescope.actions').results_scrolling_right,
 					},
 					i = {
 						['<C-o>'] = require('telescope.actions.layout').toggle_preview,
 						['<Esc>'] = require('telescope.actions').close,
+				        ["<C-a>"] = require('telescope.actions').results_scrolling_left,
+						["<C-e>"] = require('telescope.actions').results_scrolling_right,
 					},
 				},
 			}),

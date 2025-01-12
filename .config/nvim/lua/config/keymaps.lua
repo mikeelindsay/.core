@@ -71,3 +71,6 @@ end
 
 -- Copilot
 vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)')
+
+
+vim.api.nvim_set_keymap("n", "<leader>a", ":lua require('tiny-code-action').code_action()<CR>", { noremap = true, silent = true })
