@@ -104,4 +104,4 @@ vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link='CmpItemKindKeyword' })
 vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link='CmpItemKindKeyword' })
 
 
-set_highlight("DiagnosticUnnecessary", { fg = "#242524" })
+set_highlight("DiagnosticUnnecessary", { fg = "DarkGray" })
