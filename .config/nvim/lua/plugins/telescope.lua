@@ -1,5 +1,5 @@
 return {
-	'nvim-telescope/telescope.nvim',
+	'nvim-telescope/telescope.nvim', branch = 'master',
 	dependencies = {
 		'nvim-lua/plenary.nvim',
 		"nvim-telescope/telescope-frecency.nvim",
@@ -52,14 +52,10 @@ return {
 					n = {
 						['o'] = require('telescope.actions.layout').toggle_preview,
 						['<Esc>'] = require('telescope.actions').close,
-				        ["<C-a>"] = require('telescope.actions').results_scrolling_left,
-						["<C-e>"] = require('telescope.actions').results_scrolling_right,
 					},
 					i = {
 						['<C-o>'] = require('telescope.actions.layout').toggle_preview,
 						['<Esc>'] = require('telescope.actions').close,
-				        ["<C-a>"] = require('telescope.actions').results_scrolling_left,
-						["<C-e>"] = require('telescope.actions').results_scrolling_right,
 					},
 				},
 			}),
